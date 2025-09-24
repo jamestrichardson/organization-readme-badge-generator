@@ -15,8 +15,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
       - uses: actions/create-github-app-token@v2
         id: app-token
@@ -36,6 +37,11 @@ jobs:
 
       - name: Run tests with coverage
         run: npm run coverage -- --token="${{ steps.app-token.outputs.token }}"
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Update README with coverage badge
         run: |
