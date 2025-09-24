@@ -28,7 +28,7 @@ const argv = yargs(hideBin(process.argv))
 // run via `node src/index.mjs --organization=joshjohanning-org --token=ghp_abc
 
 const organization = argv.organization || core.getInput('organization')
-const token = argv.token || core.getInput('token')
+const token = argv.token || core.getInput('GITHUB_TOKEN')
 const days = argv.days || core.getInput('days')
 const graphqlUrl = argv.graphqlUrl || core.getInput('graphqlUrl')
 
