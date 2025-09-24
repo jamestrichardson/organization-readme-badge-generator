@@ -37,6 +37,8 @@ jobs:
 
       - name: Run tests with coverage
         run: npm run coverage -- --token="${{ steps.app-token.outputs.token }}"
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
@@ -104,7 +106,7 @@ jobs:
             echo "No changes to commit"
           else
             git add README.md
-            git commit -m "docs: update coverage badge"
+            git commit -m "docs: update coverage badge" --allow-empty
             git push
           fi
 
