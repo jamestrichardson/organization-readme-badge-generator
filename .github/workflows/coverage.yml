@@ -55,8 +55,24 @@ jobs:
 
           # Check if markers exist in README.md
           if grep -q "$startMarker" README.md && grep -q "$endMarker" README.md; then
-            # Replace content between markers
-            perl -i -pe "BEGIN{undef $/;} s/\Q$startMarker\E.*?\Q$endMarker\E/$startMarker\n$badge\n$endMarker/smg" README.md
+            # Use a temporary file to avoid shell escaping issues
+            temp_file=$(mktemp)
+            awk -v start="$startMarker" -v end="$endMarker" -v badge="$badge" '
+            BEGIN { in_section = 0; printed_badge = 0 }
+            $0 == start {
+              print $0;
+              print badge;
+              in_section = 1;
+              printed_badge = 1;
+              next
+            }
+            $0 == end {
+              print $0;
+              in_section = 0;
+              next
+            }
+            !in_section { print $0 }
+            ' README.md > "$temp_file" && mv "$temp_file" README.md
             echo "Updated existing coverage badge in README.md"
           else
             echo "Coverage badge markers not found in README.md"
