@@ -35,9 +35,7 @@ jobs:
         run: npm ci
 
       - name: Run tests with coverage
-        run: npm run coverage
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: npm run coverage -- --token="${{ steps.app-token.outputs.token }}"
 
       - name: Update README with coverage badge
         run: |

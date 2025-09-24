@@ -1,4 +1,4 @@
 node_modules
 .DS_Store
 coverage/
-badges/
+badges/coverage.svg
