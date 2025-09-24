@@ -1,7 +1,9 @@
 # organization-readme-badge-generator
 
 <!-- coverage-badge-start -->
+
 ![Coverage](https://img.shields.io/badge/coverage-59.79%25-brightgreen)
+
 <!-- coverage-badge-end -->
 
 An action to create markdown badges for your GitHub organization's README.md file using Shields.io.
@@ -39,7 +41,7 @@ name: update-organization-readme-badges
 
 on:
   schedule:
-    - cron: "0 7 * * *" # runs daily at 07:00
+    - cron: '0 7 * * *' # runs daily at 07:00
   workflow_dispatch:
 
 permissions:
@@ -128,6 +130,7 @@ npm run coverage
 ### Coverage
 
 Test coverage reports are generated in the `./coverage` directory and include:
+
 - HTML report (`./coverage/index.html`)
 - LCOV report (`./coverage/lcov.info`)
 - JSON summary (`./coverage/coverage-summary.json`)
