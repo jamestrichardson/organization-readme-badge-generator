@@ -1,16 +1,16 @@
 {
-  "name": "gh-action-org-readme-badge-generator",
+  "name": "organization-readme-badge-generator",
   "description": "An action to create markdown badges for your GitHub organization's README.md file",
   "version": "1.0.2",
   "author": "",
   "private": true,
-  "homepage": "https://github.com/sreop-sandbox/gh-action-org-readme-badge-generator#readme",
+  "homepage": "https://github.com/jamestrichardson/organization-readme-badge-generator#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sreop-sandbox/gh-action-org-readme-badge-generator.git"
+    "url": "git+https://github.com/jamestrichardson/organization-readme-badge-generator.git"
   },
   "bugs": {
-    "url": "https://github.com/sreop-sandbox/gh-action-org-readme-badge-generator/issues"
+    "url": "https://github.com/jamestrichardson/organization-readme-badge-generator/issues"
   },
   "keywords": [
     "GitHub",
