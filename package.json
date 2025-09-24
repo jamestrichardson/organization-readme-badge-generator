@@ -1,16 +1,16 @@
 {
-  "name": "organization-readme-badge-generator",
+  "name": "gh-action-org-readme-badge-generator",
   "description": "An action to create markdown badges for your GitHub organization's README.md file",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "",
   "private": true,
-  "homepage": "https://github.com/joshjohanning/organization-readme-badge-generator#readme",
+  "homepage": "https://github.com/sreop-sandbox/gh-action-org-readme-badge-generator#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/organization-readme-badge-generator.git"
+    "url": "git+https://github.com/sreop-sandbox/gh-action-org-readme-badge-generator.git"
   },
   "bugs": {
-    "url": "https://github.com/organization-readme-badge-generator/issues"
+    "url": "https://github.com/sreop-sandbox/gh-action-org-readme-badge-generator/issues"
   },
   "keywords": [
     "GitHub",
@@ -27,20 +27,26 @@
   },
   "scripts": {
     "bundle": "npm run format:write && npm run package",
-    "ci-test": "npx jest",
-    "coverage": "npx make-coverage-badge --output-path ./badges/coverage.svg",
+    "ci-test": "npx vitest run",
+    "coverage": "npx vitest run --coverage && npx make-coverage-badge --output-path ./badges/coverage.svg",
     "format:write": "npx prettier --write .",
     "format:check": "npx prettier --check .",
     "lint": "npx eslint . -c ./.github/linters/.eslintrc.yml",
     "package": "npx ncc build src/index.mjs -o dist --source-map --license licenses.txt",
     "package:watch": "npm run package -- --watch",
-    "test": "npx jest",
+    "test": "npx vitest",
     "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package"
   },
   "license": "MIT",
+  "type": "module",
   "dependencies": {
     "@actions/core": "^1.10.1",
     "@octokit/graphql": "^8.1.1",
+    "caniuse-lite": "^1.0.30001743",
     "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.2.4",
+    "vitest": "^3.2.4"
   }
 }

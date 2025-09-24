@@ -1,0 +1,87 @@
+name: Test Coverage
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run coverage
+
+      - name: Update README with coverage badge
+        run: |
+          # Check if README.md exists
+          if [ ! -f README.md ]; then
+            echo "README.md not found"
+            exit 1
+          fi
+
+          # Define start and end markers for coverage badge
+          startMarker="<!-- coverage-badge-start -->"
+          endMarker="<!-- coverage-badge-end -->"
+
+          # Get coverage percentage from coverage-summary.json
+          coverage_percent=$(node -e "
+            const fs = require('fs');
+            const coverage = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8'));
+            const percent = coverage.total.statements.pct;
+            console.log(percent);
+          ")
+
+          # Create coverage badge markdown
+          badge="![Coverage](https://img.shields.io/badge/coverage-${coverage_percent}%25-brightgreen)"
+
+          # Check if markers exist in README.md
+          if grep -q "$startMarker" README.md && grep -q "$endMarker" README.md; then
+            # Replace content between markers
+            perl -i -pe "BEGIN{undef $/;} s/\Q$startMarker\E.*?\Q$endMarker\E/$startMarker\n$badge\n$endMarker/smg" README.md
+            echo "Updated existing coverage badge in README.md"
+          else
+            echo "Coverage badge markers not found in README.md"
+            echo "Add the following markers to your README.md where you want the coverage badge:"
+            echo "$startMarker"
+            echo "$endMarker"
+            exit 1
+          fi
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          if git diff --quiet README.md; then
+            echo "No changes to commit"
+          else
+            git add README.md
+            git commit -m "docs: update coverage badge"
+            git push
+          fi
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: coverage/
+          retention-days: 30

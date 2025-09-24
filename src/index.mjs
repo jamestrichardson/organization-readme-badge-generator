@@ -38,8 +38,13 @@ function requireInput(input) {
   }
 }
 
-requireInput(organization);
-requireInput(token);
+export const generateBadgeMarkdown = (text, number, color) => {
+  // TODO: use native library? https://www.npmjs.com/package/badge-maker
+  const baseURL = "https://img.shields.io/static/v1";
+  const url = `${baseURL}?label=${encodeURIComponent(text)}&message=${encodeURIComponent(number)}&color=${encodeURIComponent(color)}`;
+  const markdownImage = `![${text}](${url})`;
+  return markdownImage;
+};
 
 const graphqlWithAuth = graphql.defaults({
   headers: {
@@ -48,17 +53,10 @@ const graphqlWithAuth = graphql.defaults({
   },
 });
 
+
 let badgeMarkdown = [];
 
-const generateBadgeMarkdown = (text, number, color) => {
-  // TODO: use native library? https://www.npmjs.com/package/badge-maker
-  const baseURL = "https://img.shields.io/static/v1";
-  const url = `${baseURL}?label=${encodeURIComponent(text)}&message=${encodeURIComponent(number)}&color=${encodeURIComponent(color)}`;
-  const markdownImage = `![${text}](${url})`;
-  return markdownImage;
-};
-
-const getRepositoryCount = async (org) => {
+export const getRepositoryCount = async (org) => {
   const { organization } = await graphqlWithAuth(
     `
     query ($organization: String!) {
@@ -71,11 +69,10 @@ const getRepositoryCount = async (org) => {
   `,
     { organization: org },
   );
-
   return organization.repositories.totalCount;
 };
 
-const getRepositories = async (org) => {
+export const getRepositories = async (org) => {
   let endCursor;
   let hasNextPage = true;
   const repositories = [];
@@ -111,7 +108,7 @@ const getRepositories = async (org) => {
   return repositories;
 };
 
-const getPullRequestsCount = async (org, repo, prFilterDate) => {
+export const getPullRequestsCount = async (org, repo, prFilterDate) => {
   let endCursor;
   let hasNextPage = true;
   let total = 0,
@@ -163,7 +160,7 @@ const getPullRequestsCount = async (org, repo, prFilterDate) => {
   };
 };
 
-const generateBadges = async () => {
+export const generateBadges = async () => {
   try {
     // repo count
     const repos = await getRepositories(organization);
@@ -220,6 +217,7 @@ const generateBadges = async () => {
     process.exit(1);
   }
 };
+
 
 generateBadges()
   .then((badgeMarkdown) => {
