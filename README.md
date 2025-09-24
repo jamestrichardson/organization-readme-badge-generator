@@ -1,5 +1,8 @@
 # organization-readme-badge-generator
 
+<!-- coverage-badge-start -->
+<!-- coverage-badge-end -->
+
 An action to create markdown badges for your GitHub organization's README.md file using Shields.io.
 
 ## Example
