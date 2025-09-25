@@ -36,10 +36,9 @@ jobs:
         run: npm ci
 
       - name: Run tests with coverage
-        run: npm run coverage -- --token="${{ steps.app-token.outputs.token }}"
+        run: npm run coverage
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          token: ${{ steps.app-token.outputs.token }}
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
