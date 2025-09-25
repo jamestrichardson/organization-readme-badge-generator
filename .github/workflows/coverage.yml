@@ -106,7 +106,7 @@ jobs:
             echo "No changes to commit"
           else
             git add README.md
-            git commit -m "docs: update coverage badge" --allow-empty
+            git commit -m "docs: update coverage badge" --no-verify
             git push
           fi
 
